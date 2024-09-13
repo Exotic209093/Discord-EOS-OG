@@ -4,10 +4,18 @@ from discord.ext import commands, tasks
 import requests
 import logging
 import os
+import json  # For handling JSON data
 from dotenv import load_dotenv  # Import dotenv to load .env variables
 
 # Load environment variables from the .env file
 load_dotenv()  # Load all variables from the .env file into the environment
+
+# Load server IDs and specified player IDs from JSON
+with open('config.json', 'r') as f:
+    config_data = json.load(f)
+
+server_ids = config_data['server_ids']  # List of server IDs
+specified_ids = config_data['specified_ids']  # List of player IDs
 
 # Bot setup
 intents = discord.Intents.default()
@@ -18,14 +26,8 @@ client = commands.Bot(command_prefix='!', intents=intents)
 Token = os.getenv('DISCORD_BOT_TOKEN')
 admin_channel_id = os.getenv('ADMIN_CHANNEL_ID')  # Channel to send notifications
 
-# BattleMetrics API key and Webhook
+# BattleMetrics API key
 API_KEY = os.getenv('BATTLEMETRICS_API_KEY')
-
-# Server IDs and Player IDs to monitor
-server_ids = ['10789871', '13432072', '13431987', '10789872', '10790056', '13622929',
-              '10774860', '16126951', '16124988', '13226125']  # Replace with your server IDs
-
-specified_ids = ['973831508', '1144935746', '1002210258']  # Replace with specific player IDs
 
 BASE_URL = 'https://api.battlemetrics.com/'
 
